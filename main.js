@@ -85,7 +85,6 @@ router.get('/inapi/:brand', function(req, response) {
 
       if (resultCount === 20) {
         reRequest(end, brand, response);
-        console.log('im out!');
       } else {
         generateRequest(response, brand);
       }
@@ -224,7 +223,7 @@ var processResponse = function (err, res, body) {
     STACK_COUNT--;
     if (STACK_COUNT === 0) {
       console.log('Extracting info done!');
-      response.send(count);
+      response.json(count);
     } else {
       syncRequests(response, brand);
     }

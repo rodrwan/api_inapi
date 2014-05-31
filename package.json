@@ -4,11 +4,27 @@
   "description": "webservice for marcalegal",
   "main": "main.js",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rodrwan/api_inapi.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Rodrigo Fuenzalida <rfuenzalidac87@gmail.com|>",
-  "license": "BSD-2-Clause",
+  "author": {
+     "name": "Rodrigo Fuenzalida",
+     "email": "rfuenzalidac87@gmail.com",
+     "url": "http://www.rodrigofuenzalida.com/"
+  },
+  "licenses": [
+      {
+          "type": "MIT",
+          "url": "http://github.com/jeremyosborne/packagejsonexample/blob/master/LICENSE.txt"
+      }
+  ],
+  "engines": {
+    "node": ">= 0.9.x"
+  },
   "dependencies": {
     "express": "~4.0.0",
     "body-parser": "~1.0.1",
