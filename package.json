@@ -1,0 +1,19 @@
+{
+  "name": "MarcalegalWS",
+  "version": "0.0.0",
+  "description": "webservice for marcalegal",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rodrigo Fuenzalida <rfuenzalidac87@gmail.com|>",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "express": "~4.0.0",
+    "body-parser": "~1.0.1",
+    "request": "~2.36.0",
+    "underscore": "~1.6.0",
+    "morgan": "~1.0.0"
+  }
+}
