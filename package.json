@@ -31,6 +31,6 @@
     "request": "~2.36.0",
     "underscore": "~1.6.0",
     "morgan": "~1.0.0",
-    "connect-timeout": "~0.8.1"
+    "connect-timeout": "~1.1.0"
   }
 }

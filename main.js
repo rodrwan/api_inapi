@@ -2,7 +2,7 @@ var express    = require('express'),
     bodyParser = require('body-parser'),
     request    = require('request'),
     morgan     = require('morgan'),
-    timeout = require('connect-timeout'),
+    timeout    = require('connect-timeout'),
     _          = require('underscore');
 
 
