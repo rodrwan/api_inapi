@@ -30,12 +30,14 @@ var REQUEST_STACK = [];
 var ID_STACK = [];
 var STACK_COUNT = 0;
 var count = {};
+var start;
 
 /*
  * Main method, below you can find some others methods to handle the syncronous tasks.
  * This route is the main route of the API.
  */
 router.get('/inapi/:brand', timeout(300000), function(req, response) {
+  start = process.hrtime();
   var brand = req.params.brand;
   count = {
       disponible: true,
@@ -224,6 +226,7 @@ var processResponse = function (err, res, body) {
     }
     STACK_COUNT--;
     if (STACK_COUNT === 0) {
+      console.log('Finish time: ' + process.hrtime(start)[0] + 's');
       console.log('Extracting info done!');
       response.json(count);
     } else {
