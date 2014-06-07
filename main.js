@@ -36,7 +36,7 @@ var start;
  * Main method, below you can find some others methods to handle the syncronous tasks.
  * This route is the main route of the API.
  */
-router.get('/inapi/:brand', timeout(300000), function(req, response) {
+router.get('/inapi/:brand', timeout(300000), haltOnTimedout, function(req, response) {
   start = process.hrtime();
   var brand = req.params.brand;
   count = {
@@ -112,6 +112,9 @@ router.get('/inapi', function(req, res) {
   };
   res.json(obj);
 });
+function haltOnTimedout(req, res, next){
+  if (!req.timedout) next();
+}
 /*
  * Please do magic
  */
