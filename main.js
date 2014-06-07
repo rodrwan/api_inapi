@@ -233,5 +233,6 @@ var processResponse = function (err, res, body) {
 // apply the routes to our application
 app.use('/', router);
 
-app.listen(8080);
+var port = Number(process.env.PORT || 5000);
+app.listen(port);
 console.log('Magic happens on port 8080');
