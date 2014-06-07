@@ -235,4 +235,4 @@ app.use('/', router);
 
 var port = Number(process.env.PORT || 5000);
 app.listen(port);
-console.log('Magic happens on port 8080');
+console.log('Magic happens on port: ' + port);
