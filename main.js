@@ -35,7 +35,7 @@ var count = {};
  * Main method, below you can find some others methods to handle the syncronous tasks.
  * This route is the main route of the API.
  */
-router.get('/inapi/:brand', function(req, response) {
+router.get('/inapi/:brand', timeout(300000), function(req, response) {
   var brand = req.params.brand;
   count = {
       disponible: true,
