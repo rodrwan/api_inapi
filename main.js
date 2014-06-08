@@ -37,7 +37,6 @@ var start;
  * This route is the main route of the API.
  */
 router.get('/inapi/:brand', timeout(300000), haltOnTimedout, function(req, response) {
-  start = process.hrtime();
   var brand = req.params.brand;
   count = {
       disponible: true,
@@ -88,7 +87,7 @@ router.get('/inapi/:brand', timeout(300000), haltOnTimedout, function(req, respo
       var end = _.last(result);
 
       if (resultCount === 20) {
-        reRequest(end, brand, response);
+        reRequest(end, brand, response, 0);
       } else {
         generateRequest(response, brand);
       }
@@ -112,14 +111,27 @@ router.get('/inapi', function(req, res) {
   };
   res.json(obj);
 });
+
 function haltOnTimedout(req, res, next){
   if (!req.timedout) next();
 }
+
+/*
+ *
+ */
+var supervisor = function () {
+  if (!finishedRequest)
+    return;
+
+
+};
+
 /*
  * Please do magic
  */
 var syncRequests = function (response, brand) {
   var opts = REQUEST_STACK.shift();
+  console.log('Syncing');
   var binded = processResponse.bind({'response': response, 'brand': brand});
   request.post(opts, binded);
 };
@@ -129,6 +141,7 @@ var syncRequests = function (response, brand) {
  */
 var generateRequest = function (response, brand) {
   var stop = ID_STACK.length;
+
   _.each(ID_STACK, function (data, idx) {
     var formData = {
       'numeroSolicitud': data
@@ -145,16 +158,18 @@ var generateRequest = function (response, brand) {
       }
     };
     REQUEST_STACK.push(opts);
-    if (idx === stop-1) {
+    // if (idx === stop-1) {
       syncRequests(response, brand);
-    }
+    // }
   });
 };
 
 /*
  * Recursive method, this method extract the ids of coincidense for the brand we are looking for.
  */
-var reRequest = function (end, brand, response) {
+var reRequest = function (end, brand, response, requestId) {
+  console.log(requestId)
+  requestId++;
   var formData = {
     "LastNumSol": end, "param1": "", "param2": "", "param3": brand,
     "param4": "", "param5": "", "param6": "", "param7": "", "param8": "", "param9": "",
@@ -171,6 +186,7 @@ var reRequest = function (end, brand, response) {
     }
   };
   request.post(opts, function (err, res, body) {
+    start = process.hrtime();
     if (!err && res.statusCode === 200) {
         var jBody = JSON.parse(body);
         var result = JSON.parse(jBody['d']);
@@ -183,7 +199,7 @@ var reRequest = function (end, brand, response) {
       STACK_COUNT = ID_STACK.length;
       return generateRequest(response, brand);
     } else {
-      return reRequest(end, brand, response);
+      return reRequest(end, brand, response, requestId);
     }
   });
 
@@ -228,8 +244,8 @@ var processResponse = function (err, res, body) {
       }
     }
     STACK_COUNT--;
+    console.log('Finish time: ' + process.hrtime(start)[0] + 's');
     if (STACK_COUNT === 0) {
-      console.log('Finish time: ' + process.hrtime(start)[0] + 's');
       console.log('Extracting info done!');
       response.json(count);
     } else {
