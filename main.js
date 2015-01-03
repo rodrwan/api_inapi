@@ -36,10 +36,10 @@ var start;
  * Main method, below you can find some others methods to handle the syncronous tasks.
  * This route is the main route of the API.
  */
-router.get('/inapi/:brand', timeout(300000), haltOnTimedout, function(req, response) {
+router.get('/inapi/:brand', timeout(300000), haltOnTimedout, function (req, response) {
   start = process.hrtime();
   var brand = req.params.brand;
-  REQUEST_STACK = [];
+  var REQUEST_STACK = [];
   count = {
       disponible: true,
       concedidas: 0,
@@ -53,16 +53,19 @@ router.get('/inapi/:brand', timeout(300000), haltOnTimedout, function(req, respo
       anuladas: 0,
       indefinido: 0
     };
-  console.log(brand)
+  console.log(brand);
   var formData = {
     "LastNumSol": "0", "param1": "", "param2": "", "param3": brand,
-    "param4": "", "param5": "", "param6": "", "param7": "", "param8": "", "param9": "",
-    "param10": "", "param11": "", "param12": "", "param13": "", "param14": "", "param15": ""
+    "param4": "", "param5": "", "param6": "", "param7": "", "param8": "",
+    "param9": "", "param10": "", "param11": "", "param12": "", "param13": "",
+    "param14": "", "param15": "","param16": ""
   };
   var opts = {
     'url': 'http://ion.inapi.cl:8080/Marca/BuscarMarca.aspx/FindMarcas',
+    'method': 'POST',
     'body': JSON.stringify(formData),
     'headers': {
+      'Accept': 'application/json, text/javascript, */*; q=0.01',
       'followRedirect': true,
       'User-Agent': '',
       'Content-Type': 'application/json; charset=UTF-8',
@@ -75,7 +78,6 @@ router.get('/inapi/:brand', timeout(300000), haltOnTimedout, function(req, respo
       var jBody = JSON.parse(body);
       var result = JSON.parse(jBody['d']);
     }
-
     if (result.length === 0) {
       response.json(count);
     } else {
@@ -101,7 +103,7 @@ router.get('/inapi/', function(req, res) {
   var obj = {
     'status': 'error',
     'message': 'you need to give the brand name',
-    'example': 'http://localhost/inapi/la%20preferida'
+    'example': 'http://localhost:5000/inapi/la%20preferida'
   };
   res.json(obj);
 });
@@ -172,7 +174,7 @@ var reRequest = function (end, brand, response) {
   var formData = {
     "LastNumSol": end, "param1": "", "param2": "", "param3": brand,
     "param4": "", "param5": "", "param6": "", "param7": "", "param8": "", "param9": "",
-    "param10": "", "param11": "", "param12": "", "param13": "", "param14": "", "param15": ""
+    "param10": "", "param11": "", "param12": "", "param13": "", "param14": "", "param15": "", "param16": ""
   };
   var opts = {
     'url': 'http://ion.inapi.cl:8080/Marca/BuscarMarca.aspx/FindMarcas',
