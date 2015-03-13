@@ -58,7 +58,7 @@ router.get('/inapi/:brand', timeout(300000), haltOnTimedout, function (req, resp
     "LastNumSol": "0", "param1": "", "param2": "", "param3": brand,
     "param4": "", "param5": "", "param6": "", "param7": "", "param8": "",
     "param9": "", "param10": "", "param11": "", "param12": "", "param13": "",
-    "param14": "", "param15": "","param16": ""
+    "param14": "", "param15": "","param16": "", "param17": "2"
   };
   var opts = {
     'url': 'http://ion.inapi.cl:8080/Marca/BuscarMarca.aspx/FindMarcas',
@@ -78,6 +78,7 @@ router.get('/inapi/:brand', timeout(300000), haltOnTimedout, function (req, resp
       var jBody = JSON.parse(body);
       var result = JSON.parse(jBody['d']);
     }
+    console.log(result);
     if (result.length === 0) {
       response.json(count);
     } else {
@@ -174,7 +175,8 @@ var reRequest = function (end, brand, response) {
   var formData = {
     "LastNumSol": end, "param1": "", "param2": "", "param3": brand,
     "param4": "", "param5": "", "param6": "", "param7": "", "param8": "", "param9": "",
-    "param10": "", "param11": "", "param12": "", "param13": "", "param14": "", "param15": "", "param16": ""
+    "param10": "", "param11": "", "param12": "", "param13": "", "param14": "", "param15": "",
+    "param16": "", "param17": "2"
   };
   var opts = {
     'url': 'http://ion.inapi.cl:8080/Marca/BuscarMarca.aspx/FindMarcas',
@@ -202,8 +204,6 @@ var reRequest = function (end, brand, response) {
       return reRequest(end, brand, response);
     }
   });
-
-
 };
 /*
  * Process the final response and count the coincidense for different class of inapi's brand.
