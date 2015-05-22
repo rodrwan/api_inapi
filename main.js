@@ -79,23 +79,32 @@ router.get('/inapi/:brand', timeout(300000), haltOnTimedout, function (req, resp
       var result = JSON.parse(jBody['d']);
     }
     console.log(result);
-    if (result.length === 0) {
-      response.json(count);
-    } else {
-      count.disponible = false;
-      result = _.pluck(result, 'id');
-
-      ID_STACK = _.union(ID_STACK, result);
-      STACK_COUNT = ID_STACK.length;
-
-      var resultCount = result.length;
-      var end = _.last(result);
-
-      if (resultCount === 20) {
-        reRequest(end, brand, response);
+    try {
+      if (typeof result.ErrorMessage !== 'undefined') {
+        var str2find = 'En estos momentos no se puede Generar';
+        if (result.ErrorMessage.indexOf(str2find) >= 0) {
+          response.json('error');
+        }
+      } else if (result.length === 0) {
+        response.json(count);
       } else {
-        generateRequest(response, brand);
+        count.disponible = false;
+        result = _.pluck(result, 'id');
+
+        ID_STACK = _.union(ID_STACK, result);
+        STACK_COUNT = ID_STACK.length;
+
+        var resultCount = result.length;
+        var end = _.last(result);
+
+        if (resultCount === 20) {
+          reRequest(end, brand, response);
+        } else {
+          generateRequest(response, brand);
+        }
       }
+    } catch (error) {
+      console.log(error);
     }
   });
 });
