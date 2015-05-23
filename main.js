@@ -58,7 +58,7 @@ router.get('/inapi/:brand', timeout(300000), haltOnTimedout, function (req, resp
     "LastNumSol": "0", "param1": "", "param2": "", "param3": brand,
     "param4": "", "param5": "", "param6": "", "param7": "", "param8": "",
     "param9": "", "param10": "", "param11": "", "param12": "", "param13": "",
-    "param14": "", "param15": "","param16": "", "param17": "2"
+    "param14": "", "param15": "","param16": "", "param17": "1"
   };
   var opts = {
     'url': 'http://ion.inapi.cl:8080/Marca/BuscarMarca.aspx/FindMarcas',
@@ -117,6 +117,7 @@ router.get('/inapi/', function(req, res) {
   };
   res.json(obj);
 });
+
 router.get('/inapi', function(req, res) {
   var obj = {
     'status': 'error',
