@@ -10,3 +10,16 @@ Este web service contiene dos rutas principales
 `/inapi/id/<solicitud>` Donde `<solicitud>` es el id único que entrega Inapi al momento de registrar una marca.
 Con este ID se obtienen datos específicos de la marca registrada.
 
+# Instalación
+
+Para instalar las dependencias que usa este servicio, en la terminal correr. Estando en el directorio.
+
+```sh
+$ npm install
+```
+
+Luego:
+
+```sh
+$ node main.js
+```
