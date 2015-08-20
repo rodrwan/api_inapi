@@ -112,6 +112,7 @@ router.get('/inapi/:brand', timeout(300000), haltOnTimedout, function (req, resp
 
 router.get('/inapi/id/:id', timeout(300000), haltOnTimedout, function (req, response) {
   var brandId = req.params.id;
+  start = process.hrtime();
   var formData = {
     "Hash": "", "LastNumSol": "0", "param1": brandId, "param2": "", "param3": "",
     "param4": "", "param5": "", "param6": "", "param7": "", "param8": "",
@@ -136,34 +137,34 @@ router.get('/inapi/id/:id', timeout(300000), haltOnTimedout, function (req, resp
       var jBody = JSON.parse(body);
       var result = JSON.parse(jBody['d']);
     }
-    console.log(result);
-    // try {
-    //   if (typeof result.ErrorMessage !== 'undefined') {
-    //     var str2find = 'En estos momentos no se puede Generar';
-    //     if (result.ErrorMessage.indexOf(str2find) >= 0) {
-    //       response.json('error');
-    //     }
-    //   } else if (result.length === 0) {
-    //     response.json(count);
-    //   } else {
-    //     count.disponible = false;
-    //     result = _.pluck(result, 'id');
 
-    //     ID_STACK = _.union(ID_STACK, result);
-    //     STACK_COUNT = ID_STACK.length;
+    count.disponible = false;
+    result = _.pluck(result, 'id');
 
-    //     var resultCount = result.length;
-    //     var end = _.last(result);
+    var formData = {
+      'numeroSolicitud': result[0],
+      'Hash': ''
+    };
+    var opts = {
+      'url': 'http://ion.inapi.cl:8080/Marca/BuscarMarca.aspx/FindMarcaByNumeroSolicitud',
+      'body': JSON.stringify(formData),
+      'headers': {
+        'followRedirect': true,
+        'Accept': 'application/json, text/javascript, */*; q=0.01',
+        'User-Agent': '',
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    };
 
-    //     if (resultCount === 20) {
-    //       reRequest(end, brand, response);
-    //     } else {
-    //       generateRequest(response, brand);
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    request.post(opts, function (err, res, body) {
+      if (!err && res.statusCode === 200) {
+        var jBody = JSON.parse(body);
+        var result = JSON.parse(jBody['d']);
+      }
+      response.set({ 'content-type': 'application/json; charset=utf-8' });
+      response.json(result);
+    });
   });
 });
 
